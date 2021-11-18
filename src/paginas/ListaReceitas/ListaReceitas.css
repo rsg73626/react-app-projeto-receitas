@@ -1,0 +1,6 @@
+
+
+#lista-receitas {
+    display: flex;
+    flex-wrap: wrap;
+}
