@@ -5,7 +5,7 @@ function Receita({ nome, descricao, imagem, categoria, tempo, porcoes, ingredien
     return (
         <article className="receita">
             <img src={imagem} alt="" />
-            <h2>{nome}</h2>
+            <h3>{nome}</h3>
             <p>{descricao}</p>
             <p>{categoria}</p>
             <p>Tempo de preparo: {tempo}</p>

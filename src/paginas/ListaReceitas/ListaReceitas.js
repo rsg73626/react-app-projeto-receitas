@@ -139,6 +139,43 @@ function ListaReceitas() {
     return (
         <>
             <h1>Receitas</h1>
+            <h2>Criar nova receita</h2>
+            <form>
+                <label>
+                    Nome: 
+                    <input type="text" placeholder="insira o nome da receita" />
+                </label>
+                <label>
+                    Descrição: 
+                    <input type="text" placeholder="insira a descrição da receita" />
+                </label>
+                <label>
+                    Imagem: 
+                    <input type="text" placeholder="insira a URL com a imagem da receita" />
+                </label>
+                <label>
+                    Categoria: 
+                    <input type="text" placeholder="selecione a categoria da receita" />
+                </label>
+                <label>
+                    Tempo: 
+                    <input type="text" placeholder="insira o tempo da receita" />
+                </label>
+                <label>
+                    Porções: 
+                    <input type="text" placeholder="insira a quantidade de porções da receita" />
+                </label>
+                <label>
+                    Ingredientes: 
+                    <input type="text" placeholder="insira os ingredientes da receita" />
+                </label>
+                <label>
+                    Preparação: 
+                    <input type="text" placeholder="insira os passos da receita" />
+                </label>
+                <button type="button">Cadastrar</button>
+            </form>
+            <h2>Receitas</h2>
             <section id="lista-receitas">
                 { receitas.map(receita => <Receita {...receita} key={receita.id} />) }
             </section>
