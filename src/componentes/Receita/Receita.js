@@ -10,12 +10,15 @@ function Receita({ nome, descricao, imagem, categoria, tempo, porcoes, ingredien
             <p>{categoria}</p>
             <p>Tempo de preparo: {tempo}</p>
             <p>Rende {porcoes} porções.</p>
-            <ul>
-                { ingredientes.map((ingrediente, indice) => <li key={indice}>{ingrediente}</li>) }
-            </ul>
-            <ol>
-                { preparacao.map((passo, indice) => <li key={indice}>{passo}</li>) }
-            </ol>
+            <details>
+                <summary>Detalhes</summary>
+                <ul>
+                    { ingredientes.map((ingrediente, indice) => <li key={indice}>{ingrediente}</li>) }
+                </ul>
+                <ol>
+                    { preparacao.map((passo, indice) => <li key={indice}>{passo}</li>) }
+                </ol>
+            </details>
         </article>
     );
 }

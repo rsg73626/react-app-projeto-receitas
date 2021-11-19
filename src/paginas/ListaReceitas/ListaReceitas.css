@@ -4,3 +4,26 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+#nova-receita-form {
+    width: 442px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#nova-receita-form label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 5px;
+}
+
+#nova-receita-form label input, #nova-receita-form label select {
+    width: 300px;
+}
+
+#nova-receita-form button {
+    width: 150px;
+}
