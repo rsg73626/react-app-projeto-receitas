@@ -1,20 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Receita from "../../componentes/Receita/Receita";
 import "./ListaReceitas.css";
-
-const categorias = [
-    { id: 1, nome: "Prato Principal"},
-    { id: 2, nome: "Comida Rápida" },
-    { id: 3, nome: "Peixe e Fruto do Mar" },
-    { id: 4, nome: "Sobremesa" },
-    { id: 5, nome: "Massa" },
-    { id: 6, nome: "Comida Árabe" },
-    { id: 7, nome: "Comida Japonesa" },
-    { id: 8, nome: "Comida Mexicana" },
-    { id: 9, nome: "Comida Vegetariana" },
-    { id: 10, nome: "Comida Vegana" },
-    { id: 11, nome: "Outra" }
-];
 
 const listaDeReceitasPadrao = [
     {
@@ -151,151 +137,31 @@ const listaDeReceitasPadrao = [
 
 function ListaReceitas() {
 
-    const [receitas, setReceitas] = useState(listaDeReceitasPadrao);
-    const [novaReceita, setNovaReceita] = useState({ categoria: categorias[0].id + "" });
-    const [novoIngrediente, setNovoIngrediente] = useState("");
-    const [novoPasso, setNovoPasso] = useState("");
+    const [receitas, setReceitas] = useState([]);
 
-    const mudouNome = (valor) => {
-        const novoObjeto = {...novaReceita, nome: valor};
-        setNovaReceita(novoObjeto);
-    }
+    useEffect(() => {
+        const jaSalvouListaPadraoDeReceitas = localStorage.getItem("ja-salvou-receitas-padroes");
+        if (jaSalvouListaPadraoDeReceitas == undefined || jaSalvouListaPadraoDeReceitas == "") {
+            localStorage.setItem("receitas", JSON.stringify(listaDeReceitasPadrao));
+            localStorage.setItem("ja-salvou-receitas-padroes", "true");
+        }
+    }, [])
 
-    const mudouDescricao = (valor) => {
-        const novoObjeto = {...novaReceita, descricao: valor};
-        setNovaReceita(novoObjeto);
-    }
+    useEffect(() => {
+        const receitasSalvas = localStorage.getItem("receitas");
+        if (receitasSalvas !== undefined && receitasSalvas !== "") {
+            const arrayDeObjetos = JSON.parse(receitasSalvas);
+            setReceitas(arrayDeObjetos);
+        }
+    }, [])
 
-    const mudouImagem = (valor) => {
-        const novoObjeto = {...novaReceita, imagem: valor};
-        setNovaReceita(novoObjeto);
-    }
-
-    const mudouCategoria = (valor) => {
-        const novoObjeto = {...novaReceita, categoria: valor};
-        setNovaReceita(novoObjeto);
-    }
-
-    const mudouTempo = (valor) => {
-        const novoObjeto = {...novaReceita, tempo: valor};
-        setNovaReceita(novoObjeto);
-    }
-
-    const mudouPorcoes = (valor) => {
-        const novoObjeto = {...novaReceita, porcoes: valor};
-        setNovaReceita(novoObjeto);
-    }
-
-    const adicionouIngrediente = () => {
-        const ingredientesAtuais = novaReceita.ingredientes ?? [];
-        const novosIngredientes = [...ingredientesAtuais, novoIngrediente];
-        const novoObjeto = {...novaReceita, ingredientes: novosIngredientes};
-        setNovaReceita(novoObjeto);
-        setNovoIngrediente("");
-    }
-
-    const adicionouPassoPreparacao = () => {
-        const passosAtuais = novaReceita.preparacao ?? [];
-        const novosPassos = [...passosAtuais, novoPasso];
-        const novoObjeto = {...novaReceita, preparacao: novosPassos};
-        setNovaReceita(novoObjeto);
-        setNovoPasso("");
-    }
-
-    const cadastrar = () => {
-        const novaListaDeReceitas = [novaReceita, ...receitas];
-        setReceitas(novaListaDeReceitas);
-    }
+    useEffect(() => {
+        localStorage.setItem("receitas", JSON.stringify(receitas));
+    }, [receitas])
 
     return (
         <>
             <h1>Receitas</h1>
-            <h2>Criar nova receita</h2>
-            <form id="nova-receita-form">
-                <label>
-                    Nome: 
-                    <input 
-                    type="text" 
-                    placeholder="insira o nome da receita" 
-                    defaultValue={novaReceita.nome ?? ""} 
-                    onChange={ evento => mudouNome(evento.target.value) } 
-                    />
-                </label>
-                <label>
-                    Descrição: 
-                    <input 
-                    type="text" 
-                    placeholder="insira a descrição da receita"
-                    defaultValue={novaReceita.descricao ?? ""} 
-                    onChange={ evento => mudouDescricao(evento.target.value) } />
-                </label>
-                <label>
-                    Imagem: 
-                    <input 
-                    type="text" 
-                    placeholder="insira a URL com a imagem da receita" 
-                    defaultValue={novaReceita.imagem ?? ""} 
-                    onChange={ evento => mudouImagem(evento.target.value) } />
-                </label>
-                <label>
-                    Categoria: 
-                    <select name="categoria" onChange={ evento => mudouCategoria(evento.target.value) }>
-                        { 
-                            categorias.map(categoria => <option key={categoria.id} value={categoria.id}>{categoria.nome}</option>)
-                        }
-                    </select>
-                </label>
-                <label>
-                    Tempo: 
-                    <input 
-                    type="text" 
-                    placeholder="insira o tempo da receita" 
-                    defaultValue={novaReceita.tempo ?? ""} 
-                    onChange={ evento => mudouTempo(evento.target.value) } />
-                </label>
-                <label>
-                    Porções: 
-                    <input 
-                    type="number" min="1" step="1" 
-                    placeholder="insira a quantidade de porções da receita" 
-                    defaultValue={novaReceita.porcoes ?? ""} 
-                    onChange={ evento => mudouPorcoes(evento.target.value) } />
-                </label>
-                <label>
-                    Ingredientes: 
-                    <input 
-                    type="text" 
-                    placeholder="insira os ingredientes da receita"
-                    value={novoIngrediente}
-                    onChange={ evento => setNovoIngrediente(evento.target.value) }
-                    />
-                    <button type="button" style={{width: "22px", height: "22px"}} onClick={adicionouIngrediente}>+</button>
-                </label>
-                <h3>Ingredientes: </h3>
-                <ul>
-                    {
-                        (novaReceita.ingredientes ?? []).map((ingrediente, indice) => <li key={indice}>{ingrediente}</li>)
-                    }
-                </ul>
-                <label>
-                    Preparação:
-                    <input 
-                    type="text" 
-                    placeholder="insira os passos da receita" 
-                    value={novoPasso}
-                    onChange={evento => setNovoPasso(evento.target.value)}
-                    />
-                    <button type="button" style={{width: "22px", height: "22px"}} onClick={adicionouPassoPreparacao}>+</button>
-                </label>
-                <h3>Passos da preparação: </h3>
-                <ol>
-                    {
-                        (novaReceita.preparacao ?? []).map((passo, indice) => <li key={indice}>{passo}</li>)
-                    }
-                </ol>
-                <button type="button" onClick={cadastrar}>Cadastrar</button>
-            </form>
-            <h2>Receitas</h2>
             <section id="lista-receitas">
                 { receitas.map(receita => <Receita {...receita} key={receita.id} />) }
             </section>
